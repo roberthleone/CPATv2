@@ -26,21 +26,41 @@ namespace CPAT.Areas.Academic.Controllers
         {
             var student = from s in _db.Students
                           select s;
-            
+
             if (!String.IsNullOrEmpty(searchString))
             {
-                student = student.Where(s => s.LastName.StartsWith(searchString));
-                //studentId = student.Select(id => id.Id);
+                student = student.Where(s => s.LastName.StartsWith(searchString) || s.N_Number.StartsWith(searchString));
             }
 
-            //ViewBag.tempMajorName = _db.MajorRequirements.FindAsync(student.)
+            var studentFound = await student.FirstOrDefaultAsync();
 
-            return RedirectToAction(nameof(Details), await student.FirstOrDefaultAsync());//
+            return View(nameof(Details), await student.FirstOrDefaultAsync());
         }
 
         // GET: StudentPlan/Details/5
-        public ActionResult Details(Students student)//int id
+        public async Task<IActionResult> Details(Students student)//int id
         {
+            Courses c1 = await _db.Courses.FindAsync(4);
+            Courses c2 = await _db.Courses.FindAsync(5);
+            Courses c3 = await _db.Courses.FindAsync(6);
+            Courses c4 = await _db.Courses.FindAsync(7);
+            Courses c5 = await _db.Courses.FindAsync(8);
+
+            ViewBag.Course1 = c1;
+                
+            /*
+            var majorName = from m in _db.MajorRequirements
+                            select m;
+            
+            majorName = majorName.Where(n => n.Id == student.MajorId);
+            
+            ViewBag.Major = majorName;
+            
+            var aTerm = from t in _db.AcademicTerms
+                        select t;
+
+            ViewBag.newTerm1 = await aTerm.FirstOrDefaultAsync();
+            */
             return View();
         }
 

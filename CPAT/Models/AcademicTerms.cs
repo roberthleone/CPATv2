@@ -35,7 +35,8 @@ namespace CPAT.Models
         public Season Season { get; set; }
 
         [Required]
-        public DateTime Year { get; set; }
+        [DataType(DataType.Date)]
+        public DateTime Year { get; set; } = DateTime.Now;
 
         public virtual ICollection<CourseTerm> CourseTerms { get; set; }
     }

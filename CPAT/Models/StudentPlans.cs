@@ -17,8 +17,6 @@ namespace CPAT.Models
        [Display(Name = "Student")]
        public int StudentId { get; set; }
 
-        Testing this branch out
-
        [ForeignKey("StudentId")]
        public virtual Students Students { get; set; }
        */
