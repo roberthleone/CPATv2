@@ -1,0 +1,53 @@
+﻿@model List<CPAT.Models.Courses>
+@using Microsoft.AspNetCore.Http;
+@using CPAT.Extensions;
+@{
+    ViewData["Title"] = "Index";
+}
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+<br /><br />
+
+<form method="post">
+    <div class="row">
+        @foreach (var course in Model)
+        {
+        <div class="card col-4">
+            <div class="mb-1"><b>@course.CourseName</b></div>
+            <div class="mb-1"><b>Course ID:</b> @course.CourseID</div>
+            <div class="mb-3"><b>Credits:</b> @course.CreditHours</div>
+            @if (course.DetailsLink == null)
+            {
+                <div class="mb-4">Course Details Not Available</div>
+            }
+            else
+            {
+                <div class="mb-4"><a href="@course.DetailsLink" target="_blank">Course Details</a></div>
+            }
+
+
+
+            @{
+                bool isInCart = false;
+                List<int> lstCart = HttpContextAccessor.HttpContext.Session.Get<List<int>>("sessionCourseCart");
+                if (lstCart != null && lstCart.Contains(course.Id))
+                {
+                    isInCart = true;
+                }
+
+            }
+            @if (isInCart)
+            {
+                <button type="submit" value="Remove Course" asp-action="remove" asp-route-id="@course.Id" class="btn btn-danger mb-4">Remove Course</button>
+            }
+            else
+            {
+                <button type="submit" value="Add Course" asp-route-id="@course.Id" class="btn btn-success mb-4">Add Course</button>
+            }
+
+        </div>
+
+        }
+    </div>
+</form>
